@@ -19,7 +19,7 @@ module.exports = (env, argv) => {
       new CopyPlugin({
         patterns: [
           {
-            from: path.resolve(__dirname, 'src', 'favicon.ico'),
+            from: path.resolve(__dirname, 'src', './icons/favicon.ico'),
             to: path.resolve(__dirname, 'dist'),
           },
         ],
