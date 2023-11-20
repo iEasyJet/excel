@@ -14,5 +14,7 @@ module.exports = {
   rules: {
     'comma-dangle': 'off',
     'object-curly-spacing': 'off',
+    'require-jsdoc': 0,
+    'operator-linebreak': 'off',
   },
 };
