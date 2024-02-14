@@ -16,6 +16,10 @@ export class Table extends ExcelComponent {
     return createTable(25);
   }
 
+  init() {
+    super.init();
+  }
+
   onMousedown(event) {
     const type = shouldResize(event);
     if (type) {
