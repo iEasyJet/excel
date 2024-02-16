@@ -1,7 +1,7 @@
 import { ExcelComponent } from '../../core/ExcelComponent.js';
 import { createTable } from './table.template.js';
 import { resizeHandler } from './table.resize.js';
-import { shouldResize, isCell } from './table.functions.js';
+import { shouldResize, isCell, matrix } from './table.functions.js';
 import { TableSelection } from './TableSelection.js';
 import { $ } from '../../core/dom.js';
 
@@ -10,7 +10,7 @@ export class Table extends ExcelComponent {
 
   constructor($root) {
     super($root, {
-      listeners: ['mousedown'],
+      listeners: ['mousedown', 'keydown'],
     });
   }
 
@@ -36,13 +36,31 @@ export class Table extends ExcelComponent {
     } else if (isCell(event)) {
       const $target = $(event.target);
       if (event.shiftKey) {
-        const target = $target.id(true);
-        const current = this.selection.current.id(true);
-
-        const cols = [];
+        const $cells = matrix(this.selection.current, $target).map((id) =>
+          this.$root.find(`[data-id="${id}"]`)
+        );
+        this.selection.selectGroup($cells);
       } else {
         this.selection.select($target);
       }
+    }
+  }
+
+  onKeydown(event) {
+    const keys = [
+      'Enter',
+      'Tab',
+      'ArrowLeft',
+      'ArrowRight',
+      'ArrowDown',
+      'ArrowUp',
+    ];
+
+    const { key } = event;
+
+    if (keys.includes(key)) {
+      event.preventDefault();
+      console.log(key);
     }
   }
 }
