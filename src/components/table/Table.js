@@ -1,7 +1,12 @@
 import { ExcelComponent } from '../../core/ExcelComponent.js';
 import { createTable } from './table.template.js';
 import { resizeHandler } from './table.resize.js';
-import { shouldResize, isCell, matrix } from './table.functions.js';
+import {
+  shouldResize,
+  isCell,
+  matrix,
+  nextSelector,
+} from './table.functions.js';
 import { TableSelection } from './TableSelection.js';
 import { $ } from '../../core/dom.js';
 
@@ -58,9 +63,12 @@ export class Table extends ExcelComponent {
 
     const { key } = event;
 
-    if (keys.includes(key)) {
+    if (keys.includes(key) && !event.shiftKey) {
       event.preventDefault();
-      console.log(key);
+      const id = this.selection.current.id(true);
+
+      const $next = this.$root.find(nextSelector(key, id));
+      this.selection.select($next);
     }
   }
 }

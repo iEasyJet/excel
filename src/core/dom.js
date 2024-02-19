@@ -74,6 +74,11 @@ class Dom {
     return this.$el.dataset;
   }
 
+  focus() {
+    this.$el.focus();
+    return this;
+  }
+
   findAll(selector) {
     return this.$el.querySelectorAll(selector);
   }
