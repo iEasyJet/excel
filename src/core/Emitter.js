@@ -16,15 +16,14 @@ export class Emitter {
     this.listeners[eventName].push(fn);
 
     return () => {
-      this.listeners[eventName] =
-        this.listeners[eventName].filter((listener) => {
+      /* eslint-disable */
+      this.listeners[eventName] = this.listeners[eventName].filter(
+        /* eslint-disable */
+        (listener) => {
+          /* eslint-disable */
           return listener !== fn;
-        });
+        }
+      );
     };
   }
 }
-
-const emitter = new Emitter();
-
-emitter.subscribe('vlad', (data) => console.log(data));
-emitter.emit('vlad', 42);

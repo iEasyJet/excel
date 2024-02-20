@@ -70,6 +70,10 @@ class Dom {
     return this.$el.getBoundingClientRect();
   }
 
+  text(text) {
+    this.$el.textContent = text;
+  }
+
   get data() {
     return this.$el.dataset;
   }
