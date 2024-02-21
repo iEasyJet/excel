@@ -35,9 +35,12 @@ export class Table extends ExcelComponent {
     this.$cell = this.$root.find('[data-id="0:0"]');
     this.selection.select(this.$cell);
 
-    this.$on('Formula:input', (text) => {
+    this.$on('formula:input', (text) => {
       this.selection.current.text(text);
-      console.log(text);
+    });
+
+    this.$on('formula:done', () => {
+      this.selection.current.focus();
     });
   }
 
