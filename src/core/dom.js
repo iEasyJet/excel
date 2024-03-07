@@ -19,8 +19,33 @@ class Dom {
     return this;
   }
 
+  find(selector) {
+    return $(this.$el.querySelector(selector));
+  }
+
+  addClass(className) {
+    this.$el.classList.add(className);
+    return this;
+  }
+
+  removeClass(className) {
+    this.$el.classList.remove(className);
+    return this;
+  }
+
   on(eventType, callBack) {
     this.$el.addEventListener(eventType, callBack);
+  }
+
+  id(parse) {
+    if (parse) {
+      const parsed = this.id().split(':');
+      return {
+        row: +parsed[0],
+        col: +parsed[1],
+      };
+    }
+    return this.data.id;
   }
 
   off(eventType, callBack) {
@@ -47,8 +72,24 @@ class Dom {
     return this.$el.getBoundingClientRect();
   }
 
+  text(text) {
+    if (typeof text === 'string') {
+      this.$el.textContent = text;
+      return this;
+    }
+    if (this.$el.tagName.toLowerCase() === 'input') {
+      return this.$el.value.trim();
+    }
+    return this.$el.textContent.trim();
+  }
+
   get data() {
     return this.$el.dataset;
+  }
+
+  focus() {
+    this.$el.focus();
+    return this;
   }
 
   findAll(selector) {
@@ -56,7 +97,7 @@ class Dom {
   }
 
   css(style = {}) {
-    Object.keys(style).forEach((key) => this.$el.style[key] = style[key]);
+    Object.keys(style).forEach((key) => (this.$el.style[key] = style[key]));
   }
 }
 

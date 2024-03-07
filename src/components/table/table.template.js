@@ -4,12 +4,18 @@ const CODES = {
   Z: 90,
 };
 
-function createCell(_, index) {
-  return `
-  <div class='cell' contenteditable data-col='${index}'>
-    
-  </div>
-  `;
+function createCell(row) {
+  return function newRow(_, col) {
+    return `
+      <div 
+        class='cell' 
+        contenteditable
+        data-type='cell' 
+        data-col='${col}' 
+        data-id='${row}:${col}'
+      ></div>
+    `;
+  };
 }
 
 function toColumn(col, index) {
@@ -47,9 +53,9 @@ export function createTable(rowsCount = 15) {
   const cols = new Array(colsCount).fill('').map(toChar).map(toColumn).join('');
   rows.push(createRow(null, cols));
 
-  for (let i = 0; i < rowsCount; i++) {
-    const cell = new Array(colsCount).fill('').map(createCell).join('');
-    rows.push(createRow(i + 1, cell));
+  for (let row = 0; row < rowsCount; row++) {
+    const cell = new Array(colsCount).fill('').map(createCell(row)).join('');
+    rows.push(createRow(row + 1, cell));
   }
 
   return rows.join('');
