@@ -3,12 +3,14 @@ export class Emitter {
     this.listeners = {};
   }
 
-  emit(eventName, ...args) {
-    if (Array.isArray(this.listeners[eventName])) {
-      this.listeners[eventName].forEach((listener) => {
-        listener(...args);
-      });
+  emit(event, ...args) {
+    if (!Array.isArray(this.listeners[event])) {
+      return false;
     }
+    this.listeners[event].forEach((listener) => {
+      listener(...args);
+    });
+    return true;
   }
 
   subscribe(eventName, fn) {

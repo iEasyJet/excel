@@ -49,6 +49,7 @@ export class Table extends ExcelComponent {
     });
   }
 
+
   onMousedown(event) {
     const type = shouldResize(event);
     if (type) {
