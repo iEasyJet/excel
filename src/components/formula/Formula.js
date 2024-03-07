@@ -23,6 +23,7 @@ export class Formula extends ExcelComponent {
     this.$emit('formula:input', $(event.target).text());
   }
 
+
   onKeydown(event) {
     const keys = ['Enter', 'Tab'];
     if (keys.includes(event.key)) {
