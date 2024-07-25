@@ -69,6 +69,7 @@ class Dom {
   }
 
   getCoords() {
+    console.log(this.$el.getBoundingClientRect());
     return this.$el.getBoundingClientRect();
   }
 

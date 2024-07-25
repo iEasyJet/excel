@@ -9,6 +9,7 @@ import {
 } from './table.functions.js';
 import { TableSelection } from './TableSelection.js';
 import { $ } from '../../core/dom.js';
+import * as actions from '../../redux/action.js';
 
 export class Table extends ExcelComponent {
   static className = 'excel__table';
@@ -22,7 +23,7 @@ export class Table extends ExcelComponent {
   }
 
   toHTML() {
-    return createTable(25);
+    return createTable(25, this.store.getState());
   }
 
   prepare() {
@@ -32,6 +33,8 @@ export class Table extends ExcelComponent {
   selectCell($cell) {
     this.selection.select($cell);
     this.$emit('table:select', $cell);
+
+    this.$dispatch({ type: 'TEST' });
   }
 
   init() {
@@ -42,6 +45,7 @@ export class Table extends ExcelComponent {
 
     this.$on('formula:input', (text) => {
       this.selection.current.text(text);
+      this.updateTextInStore(text);
     });
 
     this.$on('formula:done', () => {
@@ -49,11 +53,19 @@ export class Table extends ExcelComponent {
     });
   }
 
+  async resizeTable(type, event) {
+    try {
+      const data = await resizeHandler(type, this.$root, event);
+      this.$dispatch(actions.tableResize(data));
+    } catch (error) {
+      console.error('Error while resizing table:', error);
+    }
+  }
 
   onMousedown(event) {
     const type = shouldResize(event);
     if (type) {
-      resizeHandler(type, this.$root, event);
+      this.resizeTable(type, event);
     } else if (isCell(event)) {
       const $target = $(event.target);
       if (event.shiftKey) {
@@ -62,7 +74,7 @@ export class Table extends ExcelComponent {
         );
         this.selection.selectGroup($cells);
       } else {
-        this.selection.select($target);
+        this.selectCell($target);
       }
     }
   }
@@ -88,7 +100,15 @@ export class Table extends ExcelComponent {
     }
   }
 
+  updateTextInStore(value) {
+    this.$dispatch(
+        actions.changeText({
+          id: this.selection.current.id(),
+          value: value,
+        })
+    );
+  }
   onInput(event) {
-    this.$emit('table:input', $(event.target));
+    this.updateTextInStore($(event.target).text());
   }
 }
