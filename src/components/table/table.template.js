@@ -1,3 +1,6 @@
+import { defaultStyles } from '../../constants';
+import { stylesToString } from '../../core/utils';
+
 /* eslint-disable indent */
 const CODES = {
   A: 65,
@@ -20,6 +23,10 @@ function createCell(state, row) {
     const width = getWidth(state.colState, col);
     const id = `${row}:${col}`;
     const data = state.dataState[id] || '';
+    const styles = stylesToString({
+      ...defaultStyles,
+      ...state.stylesState[id]
+  } );
     return `
       <div 
         class='cell' 
@@ -27,7 +34,7 @@ function createCell(state, row) {
         data-type='cell' 
         data-col='${col}' 
         data-id='${id}'
-        style='width: ${width}'
+        style='${styles}; width: ${width}'
       >${data}</div>
     `;
   };
@@ -52,7 +59,7 @@ function createRow(index, content, state) {
     ? `<div class='row-resize' data-resize='row'></div>`
     : '';
 
-  const height = getHeight(state, index);
+  const height = getHeight(state.rowState, index);
 
   return `
     <div 
@@ -80,7 +87,7 @@ function withWidthFrom(state) {
     return {
       col,
       index,
-      width: getWidth(state.colState, index),
+      width: getWidth(state, index),
     };
   };
 }
@@ -96,7 +103,7 @@ export function createTable(rowsCount = 15, state = {}) {
     .map(toColumn)
     .join('');
 
-  rows.push(createRow(null, cols, {}));
+  rows.push(createRow(0, cols, {rowState: DEFAULT_HEIGHT}));
 
   for (let row = 0; row < rowsCount; row++) {
     const cell = new Array(colsCount)

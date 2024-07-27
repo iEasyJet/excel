@@ -69,7 +69,6 @@ class Dom {
   }
 
   getCoords() {
-    console.log(this.$el.getBoundingClientRect());
     return this.$el.getBoundingClientRect();
   }
 
@@ -99,6 +98,13 @@ class Dom {
 
   css(style = {}) {
     Object.keys(style).forEach((key) => (this.$el.style[key] = style[key]));
+  }
+
+  getStyle(styles = []) {
+    return styles.reduce((res, style) => {
+      res[style] = this.$el.style[style];
+      return res;
+    }, {});
   }
 }
 
