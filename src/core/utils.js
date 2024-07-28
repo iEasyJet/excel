@@ -29,3 +29,16 @@ export function stylesToString(styles = {}) {
         return `${camelToDashCase(key)}: ${styles[key]}`;
       }).join('; ');
 }
+
+export function debounce(func, delay) {
+  let timeout;
+  return function(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      // eslint-disable-next-line
+      func.apply(this, args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, delay);
+  };
+}

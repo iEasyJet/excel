@@ -1,5 +1,6 @@
 import { defaultStyles } from '../../constants';
 import { stylesToString } from '../../core/utils';
+import { parse } from '../../core/parse';
 
 /* eslint-disable indent */
 const CODES = {
@@ -34,8 +35,9 @@ function createCell(state, row) {
         data-type='cell' 
         data-col='${col}' 
         data-id='${id}'
+        data-value='${data}'
         style='${styles}; width: ${width}'
-      >${data}</div>
+      >${parse(data)}</div>
     `;
   };
 }
