@@ -25,7 +25,7 @@ export class Table extends ExcelComponent {
   }
 
   toHTML() {
-    return createTable(25, this.store.getState());
+    return createTable(45, this.store.getState());
   }
 
   prepare() {

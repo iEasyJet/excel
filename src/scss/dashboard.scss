@@ -16,6 +16,17 @@
     z-index: 1000;
   }
 
+  &__nothing {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 100px;
+    width: 100vw;
+
+    font-size: 1.5rem;
+  }
+
   &__new {
     margin-top: $db-header-height;
     padding: 1.5rem;
