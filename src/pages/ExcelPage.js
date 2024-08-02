@@ -14,6 +14,11 @@ function storageName(param) {
 }
 
 export class ExcelPage extends Page {
+  constructor(param) {
+    super(param);
+
+    this.storeSub = null;
+  }
   getRoot() {
     const params = this.params ? this.params : Date.now().toString();
     const state = storage(storageName(params));
@@ -23,7 +28,7 @@ export class ExcelPage extends Page {
       storage(storageName(params), state);
     }, 300);
 
-    store.subscribe(stateListener);
+    this.storeSub = store.subscribe(stateListener);
 
     this.excel = new Excel({
       components: [Header, Toolbar, Formula, Table],
@@ -39,5 +44,6 @@ export class ExcelPage extends Page {
 
   destroy() {
     this.excel.destroy();
+    this.storeSub.unsubscribe();
   }
 }

@@ -30,7 +30,11 @@ export function createReacordsTable() {
   const keys = getAllKeys();
 
   if (!keys.length) {
-    return `<p>Вы пока не создали ни одной таблицы</p>`;
+    return `
+      <p class='db__nothing'>
+        Вы пока не создали ни одной таблицы
+      </p>
+    `;
   }
 
   return `
